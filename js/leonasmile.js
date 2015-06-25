@@ -37,16 +37,15 @@ for (var i = 0; i < notes.length; i++) {
 	tones[i].oscillator.connect(tones[i].panNode);
 }
 
-var count = 0;
 
 /*
  * functions
  */
 
-function computeStereoPan (x, w) {
-	if (x == w / 2) return 0;
-	if (x < w / 2) return (-1 * (1 - ((2 * x) / w)));
-	return ((2 * x / w) - 1);
+function computeStereoPan (posX, width) {
+	if (posX == width / 2) return 0;
+	if (posX < width / 2) return (-1 * (1 - ((2 * posX) / width)));
+	return ((2 * posX / width) - 1);
 }
 
 function play (index, volume, pan) {
