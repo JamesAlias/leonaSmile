@@ -1,3 +1,4 @@
+// all websafe colors with at least 1 value of 255 (so only vibrant colors show up)
 var colors = [
 	'0  , 0  , 255',
 	'0  , 51 , 255',

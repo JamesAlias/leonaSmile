@@ -10,7 +10,7 @@ canvas.height = window.innerHeight - 4;
 
 // init assets
 var noteDrops = [],
-		dropsToDraw = [];
+	dropsToDraw = [];
 
 // test stuff
 // fill this dynamcliy later on, this is just for testing purposes
@@ -51,7 +51,7 @@ function drawDrop (x, y, radius, color, alpha) {
 	canvasCtx.fill();
 }
 
-function draw () {
+function updateVisuals () {
 	// clear canvas
 	canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -68,8 +68,5 @@ function draw () {
 			dropsToDraw.shift();
 			i--;
 		}
-	};
-
-	// start animation
-	window.requestAnimationFrame(draw);
+	}
 }
