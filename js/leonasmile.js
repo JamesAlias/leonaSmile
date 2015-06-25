@@ -48,6 +48,10 @@ function computeStereoPan (posX, width) {
 	return ((2 * posX / width) - 1);
 }
 
+function computeVolume (posY, height) {
+	return (1-(posY / height));
+}
+
 function play (index, volume, pan) {
 	// start oscillator
 	if (!tones[index].isPlaying) {
@@ -65,11 +69,12 @@ function play (index, volume, pan) {
 canvas.onmousedown = function (event) {
 	var pan = computeStereoPan(event.pageX, canvas.width);
   var index = Math.floor(Math.random() * tones.length);
+  var volume = computeVolume(event.pageY, canvas.height);
 
   // debug
-  // console.log(tones[index].name + ": " + pan);
+  // console.log(tones[index].name + "; pan: " + pan + "; vol: " + volume);
 
-  play(index, 1, pan);
+  play(index, volume, pan);
 };
 
 
