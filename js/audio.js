@@ -53,7 +53,7 @@ function play (index, volume, pan) {
 	// set pan
 	tones[index].panNode.pan.setTargetAtTime(pan, audioCtx.currentTime, 0);
 	// set gain
-	tones[index].gainNode.gain.setTargetAtTime(volume, audioCtx.currentTime, 0);
+	tones[index].gainNode.gain.setTargetAtTime(volume, audioCtx.currentTime, 0.05);
 	tones[index].gainNode.gain.setTargetAtTime(volume - (volume * 20 / 100), audioCtx.currentTime + 0.1, 0);
 	tones[index].gainNode.gain.setTargetAtTime(0, audioCtx.currentTime + 0.5, 0.25);
 }
