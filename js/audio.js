@@ -15,7 +15,6 @@ for (var i = 0; i < notes.length; i++) {
 	tones[i] = {};
 
 	tones[i].name = notes[i].name;
-	tones[i].isPlaying = false;
 
 	tones[i].gainNode = audioCtx.createGain();
 	tones[i].gainNode.connect(compressor);
@@ -27,6 +26,7 @@ for (var i = 0; i < notes.length; i++) {
 	tones[i].oscillator = audioCtx.createOscillator();
 	tones[i].oscillator.frequency.value = notes[i].frequency;
 	tones[i].oscillator.connect(tones[i].panNode);
+	tones[i].oscillator.start();
 }
 
 
@@ -45,11 +45,6 @@ function computeVolume (posY, height) {
 }
 
 function play (index, volume, pan) {
-	// start oscillator
-	if (!tones[index].isPlaying) {
-		tones[index].oscillator.start();
-		tones[index].isPlaying = true;
-	}
 	// set pan
 	tones[index].panNode.pan.setTargetAtTime(pan, audioCtx.currentTime, 0);
 	// set gain
