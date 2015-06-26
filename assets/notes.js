@@ -1,4 +1,13 @@
-var notes = [
+/**
+ * @fileoverview Container of the constant: NOTES.
+ * @author robert.baruck@gmail.com (Robert Baruck)
+ */
+
+/*
+ * List containing all notes we want to be able to play.
+ * @const
+ */
+var NOTES = [
   {'name' : 'C3' , 'frequency' : 130.81, 'keyCode' : 89, 'dropPos' : [11, 80]},
   {'name' : 'C#3', 'frequency' : 138.59, 'keyCode' : 88, 'dropPos' : [22, 80]},
   {'name' : 'D3' , 'frequency' : 146.83, 'keyCode' : 67, 'dropPos' : [33, 80]},

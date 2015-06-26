@@ -1,5 +1,13 @@
-// all websafe colors with at least 1 value of 255 (so only vibrant colors show up)
-var colors = [
+/**
+ * @fileoverview Container of the constant: COLORS.
+ * @author robert.baruck@gmail.com (Robert Baruck)
+ */
+
+/*
+ * List of all websafe colors with at least 1 value of 255 (so only vibrant colors show up).
+ * @const
+ */
+var COLORS = [
   '0  , 0  , 255',
   '0  , 51 , 255',
   '0  , 102, 255',

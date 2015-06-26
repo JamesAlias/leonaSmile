@@ -1,33 +1,52 @@
-/*
- * init visuals
+/**
+ * @fileoverview Main visual logic of the game LeonaSmile.
+ * @author robert.baruck@gmail.com (Robert Baruck)
  */
-// init canvas
-var canvas = document.getElementById('canvas'),
-    canvasCtx = canvas.getContext('2d');
 
-canvas.setAttribute('width', window.innerWidth.toString());
-canvas.setAttribute('height', window.innerHeight.toString() - 4);
 
-// init assets
-var noteDrops = [],
-  dropsToDraw = [];
+/** constants *****************************************************************/
 
-// test stuff
-// fill this dynamcliy later on, this is just for testing purposes
-for (var i = 0; i < notes.length; i++) {
-  noteDrops[i] = {};
+/**
+ * HTML5 canvas element
+ */
+var canvas = initCanvas();
 
-  noteDrops[i].pos = {};
-  noteDrops[i].pos.x = notes[i].dropPos[0] * canvas.width / 100;
-  noteDrops[i].pos.y = notes[i].dropPos[1] * canvas.height / 100;
-  noteDrops[i].radius = 1;
-  noteDrops[i].alpha = 1;
-  noteDrops[i].color = colors[0];
+/**
+ * HTML5 canvas context
+ */
+var canvasCtx = canvas.getContext('2d');
+
+/**
+ * List containing every individual drop (circle, visual representation of
+ * tone) object to draw.
+ */
+var dropsToDraw = [];
+
+
+/** visual functions **********************************************************/
+
+/**
+ * Gets and initializes HTML5 canvas element from DOM.
+ * @return {Element} Canvas element
+ */
+function initCanvas() {
+  // get canvas element
+  var canvas = document.getElementById('canvas');
+  // set width and height
+  canvas.setAttribute('width', window.innerWidth.toString());
+  canvas.setAttribute('height', window.innerHeight.toString() - 4);
+
+  return canvas;
 }
 
-
-/*
- * visual functions
+/**
+ * Creates drop object and pushes it into a given list.
+ * @param {number} x
+ * @param {number} y
+ * @param {number} radius
+ * @param {string} color
+ * @param {number} alpha Opacity value (between 0 and 1)
+ * @param {Array.<Object>} list The list the drop is pushed into
  */
 function createDrop(x, y, radius, color, alpha, list) {
   var drop = {};
@@ -42,6 +61,14 @@ function createDrop(x, y, radius, color, alpha, list) {
   list.push(drop);
 }
 
+/**
+ * Draw drop on canvas.
+ * @param {number} x
+ * @param {number} y
+ * @param {number} radius
+ * @param {string} color RGB in form of 'rrr, ggg, bbb'.
+ * @param {number} alpha Opacity value (between 0 and 1)
+ */
 function drawDrop(x, y, radius, color, alpha) {
   canvasCtx.beginPath();
   canvasCtx.arc(x, y, radius, 0, Math.PI * 2, true);
@@ -50,6 +77,10 @@ function drawDrop(x, y, radius, color, alpha) {
   canvasCtx.fill();
 }
 
+/**
+ * Clear canvas and draw all drops in {@link dropsToDraw} as well as animating
+ * the drops until removing them from {@link dropsToDraw} eventually.
+ */
 function updateVisuals() {
   // clear canvas
   canvasCtx.clearRect(0, 0, canvas.width, canvas.height);

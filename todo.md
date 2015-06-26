@@ -1,6 +1,4 @@
 # TODO
-## Visual
 
-* show circle
-* animate size and alpha
-* show names of played notes as text above
+* on innerWidth/innerHeight change ==> update canvas size
+* on keydown show notes played as text
