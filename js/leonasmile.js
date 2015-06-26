@@ -25,6 +25,7 @@ for (var i = notes.length - 1; i >= 0; i--) {
   keyMap.set(notes[i].keyCode, i);
 }
 
+// add note to notesToPlay list on key down event
 document.onkeydown = function (event) {
   keyCode = event.which;
 
@@ -44,13 +45,17 @@ document.onkeydown = function (event) {
   else {
     // pushes noteIndex of pressed key into notesToPlay list
     var noteIndex = keyMap.get(keyCode);
-    console.log(noteIndex);
-    if (noteIndex != undefined) notesToPlay.push(noteIndex);
+    // if valid key and key not pressed prior to this event
+    if ((noteIndex != undefined) && (notesToPlay.indexOf(noteIndex) == -1)) notesToPlay.push(noteIndex);
   }
 }
 
+// remove note from notesToPlay list on key up event
+document.onkeyup = function (event) {
+	notesToPlay.splice(notesToPlay.indexOf(keyMap.get(event.which)));
+}
 
-
+// plays all notes in notesToPlay list
 function updateKeys () {
   var volume = 0.8,
       pan = 0,
@@ -68,7 +73,6 @@ function updateKeys () {
     // draw
     createDrop(posX, posY, radius, colors[colorIndex], alpha, dropsToDraw);
   }
-  notesToPlay = [];
 }
 
 // gameloop
