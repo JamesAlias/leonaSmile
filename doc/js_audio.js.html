@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: js/audio.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: js/audio.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Main audio logic of the game LeonaSmile.
+ * @author robert.baruck@gmail.com (Robert Baruck)
+ */
+
+
+/** initialization ************************************************************/
+
+/**
+ * Web Audio audio context
+ */
+var audioCtx = new AudioContext();
+
+/**
+ * Web Audio compressor node
+ */
+var compressor = initCompressor();
+
+/**
+ * List containing every individual tone object (one for each note in {@link NOTES})
+ */
+var tones = initTones();
+
+
+/** audio functions ***********************************************************/
+
+/**
+ * Creates and initializes Web Audio compressor node.
+ * @return {Object} The initialized compressor node.
+ */
+function initCompressor() {
+  // create compressor node
+  var compressor = audioCtx.createDynamicsCompressor();
+  // init compressor
+  compressor.connect(audioCtx.destination);
+  compressor.attack.setTargetAtTime(0, audioCtx.currentTime, 0);
+  compressor.ratio.setTargetAtTime(20, audioCtx.currentTime, 0);
+  compressor.threshold.setTargetAtTime(-25, audioCtx.currentTime, 0);
+
+  return compressor;
+}
+
+/**
+ * Creates and initializes a List containing every individual tone object.
+ * @see tones
+ * @return {List} The initialized tones list.
+ */
+function initTones() {
+  var tones = [];
+
+  // create a list containing every individual tone object
+  for (var i = 0; i &lt; NOTES.length; i++) {
+    tones[i] = {};
+    // name
+    tones[i].name = NOTES[i].name;
+    // gain node
+    tones[i].gainNode = audioCtx.createGain();
+    tones[i].gainNode.connect(compressor);
+    tones[i].gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0);
+    // pan node
+    tones[i].panNode = audioCtx.createStereoPanner();
+    tones[i].panNode.connect(tones[i].gainNode);
+    // oscillator
+    tones[i].oscillator = audioCtx.createOscillator();
+    tones[i].oscillator.frequency.setTargetAtTime(NOTES[i].frequency, audioCtx.currentTime, 0);
+    tones[i].oscillator.connect(tones[i].panNode);
+    tones[i].oscillator.start();
+  }
+
+  return tones;
+}
+
+/**
+ * Calculate stereo panning depending on position on x axis.
+ * @param {number} posX Position on x axis
+ * @param {number} width Canvas width
+ * @return {number} The pan value (between -1 and 0).
+ */
+function computeStereoPan(posX, width) {
+  // x right in the middle of canvas
+  if (posX == width / 2) return 0;
+  // x in left half of canvas
+  if (posX &lt; width / 2) return ((-1) * (1 - ((2 * posX) / width)));
+  // x in right half of canvas
+  return ((2 * posX / width) - 1);
+}
+
+/**
+ * Calculate volume depending on position on y axis.
+ * @param {number} posY Position on y axis
+ * @param {number} height Canvas height
+ * @return {number} The volume value (between 0 and 1).
+ */
+function computeVolume(posY, height) {
+  return (1 - (posY / height));
+}
+
+/**
+ * Play note by setting it's volume and pan. The volume is also set to reduce
+ * it's value over time creating a fade out effect.
+ * @param {number} index The index of the note in {@link tones}
+ * @param {number} volume
+ * @param {number} pan
+ */
+function play(index, volume, pan) {
+  // set pan
+  tones[index].panNode.pan.setTargetAtTime(pan, audioCtx.currentTime, 0);
+  // set gain
+  tones[index].gainNode.gain.setTargetAtTime(volume, audioCtx.currentTime, 0.05);
+  tones[index].gainNode.gain.setTargetAtTime(volume - (volume * 20 / 100), audioCtx.currentTime + 0.1, 0);
+  tones[index].gainNode.gain.setTargetAtTime(0, audioCtx.currentTime + 0.5, 0.25);
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#audioCtx">audioCtx</a></li><li><a href="global.html#canvas">canvas</a></li><li><a href="global.html#canvasCtx">canvasCtx</a></li><li><a href="global.html#compressor">compressor</a></li><li><a href="global.html#computeStereoPan">computeStereoPan</a></li><li><a href="global.html#computeVolume">computeVolume</a></li><li><a href="global.html#createDrop">createDrop</a></li><li><a href="global.html#drawDrop">drawDrop</a></li><li><a href="global.html#dropsToDraw">dropsToDraw</a></li><li><a href="global.html#initCanvas">initCanvas</a></li><li><a href="global.html#initCompressor">initCompressor</a></li><li><a href="global.html#initKeyMap">initKeyMap</a></li><li><a href="global.html#initTones">initTones</a></li><li><a href="global.html#keyMap">keyMap</a></li><li><a href="global.html#notesToPlay">notesToPlay</a></li><li><a href="global.html#play">play</a></li><li><a href="global.html#STD_ALPHA">STD_ALPHA</a></li><li><a href="global.html#STD_PAN">STD_PAN</a></li><li><a href="global.html#STD_RADIUS">STD_RADIUS</a></li><li><a href="global.html#STD_VOLUME">STD_VOLUME</a></li><li><a href="global.html#tones">tones</a></li><li><a href="global.html#updatePlayingNotes">updatePlayingNotes</a></li><li><a href="global.html#updateVisuals">updateVisuals</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Tue Jun 30 2015 13:43:33 GMT+0200 (W. Europe Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

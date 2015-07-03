@@ -40,6 +40,20 @@ function initCanvas() {
 }
 
 /**
+ * Initialize menu onclick function
+ */
+function initMenu() {
+  var menu = document.getElementById('menu');
+
+  menu.onclick = function() {
+    menu.style.display = 'none';
+    document.getElementById('title').style.display = 'none';
+    initGame();
+    gameloop();
+  };
+}
+
+/**
  * Creates drop object and pushes it into a given list.
  * @param {number} x
  * @param {number} y
