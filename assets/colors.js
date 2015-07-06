@@ -4,7 +4,8 @@
  */
 
 /*
- * List of all websafe colors with at least 1 value of 255 (so only vibrant colors show up).
+ * List of all websafe colors with at least 1 value of 255 (so only vibrant
+ * colors show up).
  * @const
  */
 var COLORS = [

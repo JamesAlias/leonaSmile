@@ -17,7 +17,8 @@ var audioCtx = new AudioContext();
 var compressor = initCompressor();
 
 /**
- * List containing every individual tone object (one for each note in {@link NOTES})
+ * List containing every individual tone object (one for each note in
+ * {@link NOTES}).
  */
 var tones = initTones();
 
@@ -62,7 +63,8 @@ function initTones() {
     tones[i].panNode.connect(tones[i].gainNode);
     // oscillator
     tones[i].oscillator = audioCtx.createOscillator();
-    tones[i].oscillator.frequency.setTargetAtTime(NOTES[i].frequency, audioCtx.currentTime, 0);
+    tones[i].oscillator.frequency.setTargetAtTime(NOTES[i].frequency,
+      audioCtx.currentTime, 0);
     tones[i].oscillator.connect(tones[i].panNode);
     tones[i].oscillator.start();
   }
@@ -106,7 +108,10 @@ function play(index, volume, pan) {
   // set pan
   tones[index].panNode.pan.setTargetAtTime(pan, audioCtx.currentTime, 0);
   // set gain
-  tones[index].gainNode.gain.setTargetAtTime(volume, audioCtx.currentTime, 0.05);
-  tones[index].gainNode.gain.setTargetAtTime(volume - (volume * 20 / 100), audioCtx.currentTime + 0.1, 0);
-  tones[index].gainNode.gain.setTargetAtTime(0, audioCtx.currentTime + 0.5, 0.25);
+  tones[index].gainNode.gain.setTargetAtTime(volume, audioCtx.currentTime,
+    0.05);
+  tones[index].gainNode.gain.setTargetAtTime(volume - (volume * 20 / 100),
+    audioCtx.currentTime + 0.1, 0);
+  tones[index].gainNode.gain.setTargetAtTime(0, audioCtx.currentTime + 0.5,
+    0.25);
 }

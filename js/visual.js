@@ -102,7 +102,8 @@ function updateVisuals() {
   // draw drops
   for (var i = 0; i < dropsToDraw.length; i++) {
     // draw drop
-    drawDrop(dropsToDraw[i].pos.x, dropsToDraw[i].pos.y, dropsToDraw[i].radius, dropsToDraw[i].color, dropsToDraw[i].alpha);
+    drawDrop(dropsToDraw[i].pos.x, dropsToDraw[i].pos.y, dropsToDraw[i].radius,
+      dropsToDraw[i].color, dropsToDraw[i].alpha);
     // increase radius
     dropsToDraw[i].radius += 1.5;
     // update alpha
