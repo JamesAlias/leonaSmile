@@ -7,6 +7,18 @@
 /** constants *****************************************************************/
 
 /**
+ * Value between 1 and 10 to mix up colors each time the game is started.
+ * @const
+ */
+var RANDOM_COLOR_MODIFIER = Math.floor(Math.random() * 10 + 1);
+
+/**
+ * Map of keyCodes ==> noteIndex
+ * @const
+ */
+var KEY_MAP = initKeyMap();
+
+/**
  * Standard volume
  * @const
  */
@@ -29,12 +41,6 @@ var STD_RADIUS = 1;
  * @const
  */
 var STD_ALPHA = 1;
-
-/**
- * Map of keyCodes ==> noteIndex
- * @const
- */
-var keyMap = initKeyMap();
 
 
 /** initialization ************************************************************/
@@ -60,13 +66,15 @@ var mouseDown = function(event) {
   // play note
   play(noteIndex, volume, pan);
   // create drop
-  createDrop(
-    event.pageX,
-    event.pageY,
-    STD_RADIUS,
-    COLORS[Math.floor(Math.random() * COLORS.length)],
-    STD_ALPHA,
-    dropsToDraw);
+  dropsToDraw.push(
+    createDrop(
+      event.pageX,
+      event.pageY,
+      STD_RADIUS,
+      COLORS[Math.floor(Math.random() * COLORS.length)],
+      STD_ALPHA
+    )
+  );
 };
 
 /**
@@ -75,25 +83,29 @@ var mouseDown = function(event) {
  * @param {Object} event Input event
  */
 var keyDown = function(event) {
+  if (event.ctrlKey || event.altKey) return;
+
   keyCode = event.which;
 
   // if pressed key is "space"
   if (keyCode == 32) {
     // randomize color and note
-    var randomNoteIndex = Math.floor(Math.random() * tones.length),
-        randomColorIndex = Math.floor(Math.random() * COLORS.length),
+    var randNoteIndex = Math.floor(Math.random() * tones.length),
+        randColorIndex = Math.floor(Math.random() * COLORS.length),
         posX = canvas.width / 2,
         posY = canvas.height / 2,
         radius = 1,
         alpha = 1;
 
     // play note
-    play(randomNoteIndex, STD_VOLUME, STD_PAN);
+    play(randNoteIndex, STD_VOLUME, STD_PAN);
     // create drop
-    createDrop(posX, posY, radius, COLORS[randomColorIndex], alpha, dropsToDraw);
+    dropsToDraw.push(
+      createDrop(posX, posY, radius, COLORS[randColorIndex], alpha)
+    );
   } else {
     // pushes noteIndex of pressed key into notesToPlay list
-    var noteIndex = keyMap.get(keyCode);
+    var noteIndex = KEY_MAP.get(keyCode);
     // if valid key and key not pressed prior to this event
     if ((noteIndex !== undefined) && (notesToPlay.indexOf(noteIndex) == -1)) {
       notesToPlay.push(noteIndex);
@@ -106,14 +118,14 @@ var keyDown = function(event) {
  * @param {Object} event Input event
  */
 var keyUp = function(event) {
-  notesToPlay.splice(notesToPlay.indexOf(keyMap.get(event.which)));
+  notesToPlay.splice(notesToPlay.indexOf(KEY_MAP.get(event.which)));
 };
 
 
 /** game functions **********************************************************/
 
 /**
- * Initialize {@link keyMap}
+ * Initialize {@link KEY_MAP}
  * @return {Map}
  */
 function initKeyMap() {
@@ -133,12 +145,14 @@ function updatePlayingNotes() {
     var noteIndex = notesToPlay[i],
         posX = NOTES[noteIndex].dropPos[0] * canvas.width / 100,
         posY = NOTES[noteIndex].dropPos[1] * canvas.height / 100,
-        colorIndex = Math.floor(Math.random() * COLORS.length);
+        colorIndex = (noteIndex * RANDOM_COLOR_MODIFIER) % COLORS.length;
 
     // play note
     play(noteIndex, STD_VOLUME, STD_PAN);
     // draw
-    createDrop(posX, posY, STD_RADIUS, COLORS[colorIndex], STD_ALPHA, dropsToDraw);
+    dropsToDraw.push(
+      createDrop(posX, posY, STD_RADIUS, COLORS[colorIndex], STD_ALPHA)
+    );
   }
 }
 

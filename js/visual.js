@@ -60,9 +60,9 @@ function initMenu() {
  * @param {number} radius
  * @param {string} color
  * @param {number} alpha Opacity value (between 0 and 1)
- * @param {Array.<Object>} list The list the drop is pushed into
+ * @return {Object} The created drop
  */
-function createDrop(x, y, radius, color, alpha, list) {
+function createDrop(x, y, radius, color, alpha) {
   var drop = {};
 
   drop.pos = {};
@@ -72,7 +72,7 @@ function createDrop(x, y, radius, color, alpha, list) {
   drop.alpha = alpha;
   drop.color = color;
 
-  list.push(drop);
+  return drop;
 }
 
 /**
