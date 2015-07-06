@@ -40,6 +40,7 @@ body {
   font-family: 'Great Vibes', cursive;
   left: calc(50% - (342px / 2));
   position: absolute;
+  top: calc(10% - (100px / 2));
   -webkit-font-smoothing: antialiased;
   -webkit-user-select: none;
 }
