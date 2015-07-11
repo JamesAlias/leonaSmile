@@ -1,46 +1,55 @@
 body {
- background : #123;
- margin : 0;
+  background: #123;
+  margin: 0;
+}
+
+#overlay {
+  display: table;
+  height: 100%;
+  min-height: 600px;
+  min-width: 800px;
+  position: absolute;
+  width: 100%;
 }
 
 #menu {
   background-color: #FF6;
   border-radius: 50%;
   cursor: pointer;
-  display: block;
-  height: 150px;
-  left: calc(50% - 75px);
+  display: table;
+  height: 200px;
+  left: calc(50% - 100px);
   opacity: 0.80;
   position: absolute;
-  top: calc(50% - 75px);
+  top: calc(50% - 100px);
   transition: opacity 0.5s;
-  width: 150px;
+  width: 200px;
 }
 
 #menu:hover {
   opacity: 1;
 }
 
-#menu span {
+#menu-text {
   color: #123;
+  display: table-cell;
   font-family: sans-serif;
   font-size: 3em;
   font-weight: bold;
   font-variant: small-caps;
-  left: 7%;
-  position: absolute;
-  top: 30%;
+  text-align: center;
+  vertical-align: middle;
   -webkit-font-smoothing: antialiased;
   -webkit-user-select: none;
 }
 
 #title {
   color: #FF6;
-  font-size: 5em;
+  display: table-cell;
+  font-size: 6em;
   font-family: 'Great Vibes', cursive;
-  left: calc(50% - (342px / 2));
-  position: absolute;
-  top: calc(10% - (100px / 2));
+  text-align: center;
+  padding-top: 7%;
   -webkit-font-smoothing: antialiased;
   -webkit-user-select: none;
 }
