@@ -79,11 +79,29 @@ Game.prototype.getColors = function() {
  */
 function SoundManager() {
   this.context = new window.AudioContext();
-  this.compressorNode = this.context.createDynamicsCompressor();
-  this.compressorNode.connect(this.context.destination);
+
+  this.compressorNode = this.createCompressor(0, 20, -25);
 
   this.buffers = [];
 }
+
+/**
+ * Creates Web Audio compressor and sets values.
+ * @param  {number} attack
+ * @param  {number} ratio
+ * @param  {number} threshold
+ * @return {Object}           The initialized compressor.
+ */
+SoundManager.prototype.createCompressor = function(attack, ratio, threshold) {
+  var compressor = this.context.createDynamicsCompressor();
+
+  compressor.connect(this.context.destination);
+  compressor.attack.setTargetAtTime(attack, this.context.currentTime, 0);
+  compressor.ratio.setTargetAtTime(ratio, this.context.currentTime, 0);
+  compressor.threshold.setTargetAtTime(threshold, this.context.currentTime, 0);
+
+  return compressor;
+};
 
 //TODO Consider using promise for decoding as well.
 /**
