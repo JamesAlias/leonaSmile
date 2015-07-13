@@ -16,16 +16,6 @@ function Game() {
 }
 
 
-function updateLoadedAssets(inc) {
-  game.assetsLoaded += inc;
-  var percentage = game.assetsLoaded / game.assetCount * (100 - 2);
-  document.getElementById('loader-bar').style.width = percentage.toString() + '%';
-  if (game.assetCount == game.assetsLoaded) {
-    var ready = new Event('ready');
-    document.dispatchEvent(ready);
-  }
-}
-
 /**
  * Retrieve Notes from server and stores sound buffers.
  */
@@ -154,6 +144,20 @@ function xhrGet(url, type) {
   });
 }
 
+
+/**
+ * Handle loading screen and dispatch 'ready' event when loading is done.
+ * @param  {number} inc Number of new files finished loading.
+ */
+function updateLoadedAssets(inc) {
+  game.assetsLoaded += inc;
+  var percentage = game.assetsLoaded / game.assetCount * (100 - 2);
+  document.getElementById('loader-bar').style.width = percentage.toString() + '%';
+  if (game.assetCount == game.assetsLoaded) {
+    var ready = new Event('ready');
+    document.dispatchEvent(ready);
+  }
+}
 
 
 ///////////
