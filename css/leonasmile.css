@@ -70,6 +70,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.loading {
+  cursor: progress !important;
+
+  opacity: 1 !important;
+}
+
 #loader {
   width: 80%;
   height: 10px;
@@ -83,7 +89,7 @@ body {
   top: 2px;
   left: 2px;
 
-  width: 0%;
+  width: 0;
   height: 6px;
 
   background-color: #ff6;

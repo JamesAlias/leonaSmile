@@ -12,7 +12,9 @@ function Game() {
   this.assetsLoaded = 0;
   this.colors = [];
   this.notes = [];
+
   this.soundManager = new SoundManager();
+  this.visualManager = new VisualManager();
 }
 
 
@@ -64,7 +66,7 @@ Game.prototype.getColors = function() {
 
 
 /**
- * Sound manager class
+ * SoundManager class
  * @constructor
  */
 function SoundManager() {
@@ -126,6 +128,113 @@ SoundManager.prototype.loadSounds = function(urls) {
 
 
 /**
+ * Update function for game loop.
+ */
+SoundManager.prototype.update = function() {
+  //todo
+};
+
+
+/**
+ * VisualManager class.
+ * @constructor
+ */
+function VisualManager() {
+  this.canvas = this.initCanvas();
+  this.canvasCtx = this.canvas.getContext('2d');
+  this.dropsToDraw = [];
+}
+
+
+/**
+ * Gets and initializes HTML5 canvas element from DOM.
+ * @return {Element} Canvas element
+ */
+VisualManager.prototype.initCanvas = function() {
+  // get canvas element
+  var canvas = document.getElementById('canvas');
+  // set width and height
+  canvas.setAttribute('width', window.innerWidth.toString());
+  canvas.setAttribute('height', window.innerHeight.toString() - 4);
+
+  return canvas;
+};
+
+
+/**
+ * Update function for game loop.
+ */
+VisualManager.prototype.update = function() {
+  // clear canvas
+  this.canvasCtx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+  // debugging
+  var dropCount = 0;
+
+  // update Drops
+  this.dropsToDraw.forEach(function(drop) {
+    dropCount++;
+    drop.update(this.canvasCtx);
+    // remove drop if alpha < 0
+    if (drop.alpha < 0) {
+      this.dropsToDraw.shift();
+      drop = null;
+      dropCount--;
+    }
+  });
+  console.log(dropCount);
+};
+
+/**
+ * Creates drop object.
+ * @param {number} x
+ * @param {number} y
+ * @param {string} color
+ * @param {number} radius
+ * @param {number} alpha Opacity value (between 0 and 1)
+ * @constructor
+ */
+function Drop(x, y, color, radius, alpha) {
+  this.pos = {
+    x: x,
+    y: y
+  };
+  this.color = color;
+  this.radius = radius || 1;
+  this.alpha = alpha || 1;
+}
+
+/**
+ * Draw drop on canvas.
+ * @param  {Object} canvasCtx Canvas 2D context.
+ */
+Drop.prototype.draw = function(canvasCtx) {
+  canvasCtx.beginPath();
+  canvasCtx.arc(
+    this.pos.x,
+    this.pos.y,
+    this.radius,
+    0, Math.PI * 2, true);
+  canvasCtx.closePath();
+  canvasCtx.fillStyle = 'rgba(' + this.color + ', ' + this.alpha + ')';
+  canvasCtx.fill();
+};
+
+
+/**
+ * Update function for game loop. Handles behavior over time.
+ * @param  {Object} canvasCtx Canvas 2d rendering context.
+ */
+Drop.prototype.update = function(canvasCtx) {
+  this.draw(canvasCtx);
+  // increase radius
+  this.radius += 1.5;
+  // update alpha
+  this.alpha -= 1 / 60;
+};
+
+
+/**
  * XMLHttpRequest interface
  * @param  {string} url  Url of the requested file.
  * @param  {string} type Type of response.
@@ -152,7 +261,8 @@ function xhrGet(url, type) {
 function updateLoadedAssets(inc) {
   game.assetsLoaded += inc;
   var percentage = game.assetsLoaded / game.assetCount * (100 - 2);
-  document.getElementById('loader-bar').style.width = percentage.toString() + '%';
+  document.getElementById('loader-bar')
+    .style.width = percentage.toString() + '%';
   if (game.assetCount == game.assetsLoaded) {
     var ready = new Event('ready');
     document.dispatchEvent(ready);
@@ -169,6 +279,7 @@ var game = new Game();
 
 document.addEventListener('ready', function(event) {
   document.getElementById('menu-text').innerHTML = 'Start';
+  document.getElementById('menu').className = '';
   document.getElementById('menu').onclick = function() {
     document.getElementById('menu').style.display = 'none';
     document.getElementById('title').style.display = 'none';
@@ -176,5 +287,16 @@ document.addEventListener('ready', function(event) {
   };
 });
 
+
 game.getNotes();
 game.getColors();
+
+function gameLoop() {
+  game.soundManager.update();
+  game.visualManager.update();
+
+  window.requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+
